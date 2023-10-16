@@ -1,66 +1,130 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="200" alt="Laravel Logo"></a>
+<a href="https://vuejs.org/" target="_blank"><img src="https://avatars.githubusercontent.com/u/6128107?s=200&v=4" width="80" alt="Vue.js Logo"></a>
+<a href="https://inertiajs.com/" target="_blank"><img src="https://avatars.githubusercontent.com/u/47703742?s=200&v=4" width="80" alt="Vue.js Logo"></a>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Custom Setup
 
-## About Laravel
+If you want to configure vue.js3 and inertia custom, then you need below requirements.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+* Laravel 10.
+* PHP 8.1 or Greater
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+After this follow below steps.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 1. Inertia Setup
 
-## Learning Laravel
+We are following Inertia.js official documentation.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+1. Copy and paste the below composer command.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+```
+composer require inertiajs/inertia-laravel
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+2. Go to resources/views if you don't found `app.blade.php` file then create it for our root view. (you can add tailwind or bootstrap classes in it as I mentioned bottstrap classes in my repository.
+   )
 
-## Laravel Sponsors
+```
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    @vite('resources/js/app.js')
+    @inertiaHead
+  </head>
+  <body>
+    @inertia
+  </body>
+</html>
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+3. Create middleware.
 
-### Premium Partners
+```
+php artisan inertia:middleware
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+4. Copy and paste below line into your `app/Http/Kernel.php` in **$middlewareGroups** `web` array like below image.
+   ![img.png](img.png)
 
-## Contributing
+```
+'web' => [
+    // ...
+    \App\Http\Middleware\HandleInertiaRequests::class,
+],
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+5. Run below command.
 
-## Code of Conduct
+```
+npm install @inertiajs/vue3
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 2. Vue.js3 Setup
 
-## Security Vulnerabilities
+We are following Inertia.js official documentation.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+1. Run below commands.
 
-## License
+```
+npm install vue@next
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```
+npm install @vitejs/plugin-vue
+```
+
+2. Go to `vite.config.js` file in the root directory and replace with below codes.
+
+```
+import {defineConfig} from 'vite';
+import laravel from 'laravel-vite-plugin';
+import vue from '@vitejs/plugin-vue';
+
+export default defineConfig({
+    plugins: [
+        laravel({
+            input: ['resources/css/app.css', 'resources/js/app.js'],
+            refresh: true,
+        }),
+        vue({
+            template: {
+                transformAssetUrls: {
+                    bas: null,
+                    includeAbsolute: false
+                }
+            }
+        })
+    ],
+});
+```
+
+3. Go to `resources/js/app.js` file and replace with below codes.
+
+```
+import './bootstrap';
+
+import {createApp, h} from 'vue'
+import {createInertiaApp} from '@inertiajs/vue3'
+
+createInertiaApp({
+    resolve: name => {
+        const pages = import.meta.glob('./Pages/**/*.vue', {eager: true})
+        return pages[`./Pages/${name}.vue`]
+    },
+    setup({el, App, props, plugin}) {
+        createApp({render: () => h(App, props)})
+            .use(plugin)
+            .mount(el)
+    },
+})
+```
+
+### 3. Last Setup
+
+Just setup your pages in `resources/js/Pages` folder or if you want to something else so also change the folder name in app.js file above.
+
+`npm install`
+<br />
+`npm run dev`
