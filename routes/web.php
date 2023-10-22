@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CustomerController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -33,3 +34,10 @@ Route::middleware([
         return Inertia::render('Dashboard');
     })->name('dashboard');
 });
+
+Route::get('customer/create', [CustomerController::class, 'create'])->name('customer.create');
+Route::get('customers', [CustomerController::class, 'index'])->name('customer.list');
+Route::post('customers', [CustomerController::class, 'store']);
+Route::delete('customer/{customer}', [CustomerController::class, 'destroy']);
+Route::get('customer/edit/{customer}', [CustomerController::class, 'edit']);
+Route::put('customer/update/{customer}', [CustomerController::class, 'update']);

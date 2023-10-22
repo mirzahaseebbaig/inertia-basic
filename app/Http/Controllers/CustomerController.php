@@ -26,7 +26,7 @@ class CustomerController extends Controller
         ]);
         Customer::create($validated);
 
-        return redirect()->route('customers.index');
+        return redirect()->route('customer.list');
     }
 
     public function create()
@@ -50,13 +50,13 @@ class CustomerController extends Controller
         ]);
         $customer->update($validated);
 
-        return redirect()->route('customers.index');
+        return redirect()->route('customer.list')->with('success', 'Customer udpated.');
     }
 
     public function destroy(Customer $customer)
     {
         $customer->delete();
 
-        return redirect()->route('customers.index');
+        return redirect()->route('customer.list')->with('success', 'Customer Deleted.');
     }
 }
