@@ -8,12 +8,12 @@ use Inertia\Inertia;
 
 class CustomerController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $customers = Customer::all();
-
         return Inertia::render('index', [
-            'customers' => $customers
+            'customers' => Customer::when($request->search, function ($query, $search) {
+                $query->where('name', 'LIKE', "%$search%");
+            })->paginate(10)
         ]);
     }
 

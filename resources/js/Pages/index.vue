@@ -1,8 +1,11 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
 import {router} from '@inertiajs/vue3';
+import {ref, watch} from "vue";
+import Pagination from "@/Components/Pagination.vue";
 
 defineProps({customers: Object})
+const search = ref('');
 
 function destory(id) {
   router.delete(`customer/${id}`);
@@ -11,6 +14,16 @@ function destory(id) {
 function edit(id) {
   router.get(`customer/edit/${id}`);
 }
+
+watch(search, (value) => {
+  router.get(
+      "customers",
+      {search: value},
+      {
+        preserveState: true,
+      }
+  );
+});
 </script>
 
 <template>
@@ -23,6 +36,16 @@ function edit(id) {
 
 
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-10">
+
+      <div class="sm:col-span-3">
+        <div class="mt-2 mb-2">
+          <input v-model="search"
+                 class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                 placeholder="Search..."
+                 type="text"
+          >
+        </div>
+      </div>
 
       <div v-if="$page.props.flash.error" class="flex items-center p-4 mb-4 text-sm text-red-800 border border-red-300 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 dark:border-red-800" role="alert">
         <svg aria-hidden="true" class="flex-shrink-0 inline w-4 h-4 mr-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -55,7 +78,9 @@ function edit(id) {
             </tr>
           </thead>
           <tbody>
-            <tr v-for="customer in customers" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700" v-on="customer.id">
+            <tr v-for="(customer, index) in customers.data" :class="{'bg-gray-600' : index % 2 == 0}"
+                class="border-b dark:border-gray-700 bg-gray-800"
+                v-on="customer.id">
               <th class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white" scope="row">
                 {{ customer.name }}
               </th>
@@ -78,6 +103,10 @@ function edit(id) {
             </tr>
           </tbody>
         </table>
+
+        <div class="p-5 flex justify-end">
+          <Pagination :data="customers"/>
+        </div>
       </div>
 
     </div>
