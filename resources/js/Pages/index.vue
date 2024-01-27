@@ -8,7 +8,9 @@ defineProps({customers: Object})
 const search = ref('');
 
 function destory(id) {
-  router.delete(`customer/${id}`);
+  if (confirm('Are you sure you want to delete? ')) {
+    router.delete(`customer/${id}`);
+  }
 }
 
 function edit(id) {
