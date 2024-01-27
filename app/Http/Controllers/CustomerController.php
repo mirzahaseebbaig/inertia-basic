@@ -12,8 +12,8 @@ class CustomerController extends Controller
     {
         return Inertia::render('index', [
             'customers' => Customer::when($request->search, function ($query, $search) {
-                $query->where('name', 'LIKE', "%$search%");
-            })->paginate(10)
+                $query->where('name', 'LIKE', "%$search%")->orWhere('email', 'LIKE', "%$search%");
+            })->paginate(10),
         ]);
     }
 
@@ -37,7 +37,7 @@ class CustomerController extends Controller
     public function edit(Customer $customer)
     {
         return Inertia::render('edit', [
-            'customer' => $customer
+            'customer' => $customer,
         ]);
     }
 
