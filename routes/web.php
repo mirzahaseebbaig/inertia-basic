@@ -41,3 +41,5 @@ Route::post('customers', [CustomerController::class, 'store']);
 Route::delete('customer/{customer}', [CustomerController::class, 'destroy']);
 Route::get('customer/edit/{customer}', [CustomerController::class, 'edit']);
 Route::put('customer/update/{customer}', [CustomerController::class, 'update']);
+
+Route::get('chat', [App\Http\Controllers\ChatsController::class, 'index'])->name('chat');
