@@ -42,6 +42,7 @@ class HandleInertiaRequests extends Middleware
                 'error' => fn() => $request->session()->get('error')
             ],
             'pusherKey' => env('PUSHER_APP_KEY'),
+            'userId' => auth()->check() ? auth()->user()->id : '',
         ]);
     }
 }
