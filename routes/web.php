@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\ChatsController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -42,4 +43,6 @@ Route::delete('customer/{customer}', [CustomerController::class, 'destroy']);
 Route::get('customer/edit/{customer}', [CustomerController::class, 'edit']);
 Route::put('customer/update/{customer}', [CustomerController::class, 'update']);
 
-Route::get('chat', [App\Http\Controllers\ChatsController::class, 'index'])->name('chat');
+Route::get('chat', [ChatsController::class, 'index'])->name('chat');
+Route::get('/messages', [ChatsController::class, 'fetchMessages'])->name('fetch-messages');
+// Route::post('/messages', [ChatsController::class, 'sendMessage']);
