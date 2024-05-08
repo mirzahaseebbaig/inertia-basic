@@ -21,6 +21,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-Route::get('test', function () {
-    event(new MessageSent());
+Route::get('test/{id}', function ($id) {
+    event(new MessageSent($id));
+    info('working fine');
+    return response()->json(['user_id' => $id]);
 });
