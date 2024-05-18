@@ -18,9 +18,9 @@ const channel = pusher.subscribe(`chat.${page.props.userId}`);
 
 onMounted(() => {
   Echo.private(`chat.${page.props.userId}`)
-      .listen('.chat.notification', (e) => {
-        alert('New message received');
-      });
+    .listen('.chat.notification', (e) => {
+      alert('New message received');
+    });
 });
 
 onUnmounted(() => {
@@ -31,12 +31,12 @@ onUnmounted(() => {
 
 function fetchMessages() {
   router.get('messages', { preserveState: true })
-      .then(response => {
-        messages.value = response.data; // 'messages' is now a ref, so we use .value to access its value
-      })
-      .catch(error => {
-        console.error('Error fetching messages:', error);
-      });
+    .then(response => {
+      messages.value = response.data; // 'messages' is now a ref, so we use .value to access its value
+    })
+    .catch(error => {
+      console.error('Error fetching messages:', error);
+    });
 }
 
 const messagesTable = computed(() => {
