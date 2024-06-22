@@ -66,4 +66,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Message::class);
     }
+
+    public static function whereNotLoggedIn()
+    {
+        return User::whereNot('id', auth()->user()->id)->get()->toArray();
+    }
 }

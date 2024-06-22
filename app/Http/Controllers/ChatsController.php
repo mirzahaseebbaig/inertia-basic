@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\MessageSent;
 use App\Models\Message;
+use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Mail\Events\MessageSending;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
@@ -13,10 +12,11 @@ class ChatsController extends Controller
 {
     //Add the below functions
 
-
     public function index()
     {
-        return Inertia::render('chat');
+        $users = User::whereNotLoggedIn();
+
+        return Inertia::render('chat', compact('users'));
     }
 
     public function fetchMessages()
@@ -28,8 +28,9 @@ class ChatsController extends Controller
     {
         $user = Auth::user();
         $message = $user->messages()->create([
-            'message' => $request->input('message')
+            'message' => $request->input('message'),
         ]);
+
         return ['status' => 'Message Sent!'];
     }
 }

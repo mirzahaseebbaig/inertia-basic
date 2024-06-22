@@ -8,6 +8,12 @@ import InputError from "@/Components/InputError.vue";
 const page = usePage();
 const messages = ref([]);
 
+const props = defineProps({
+  users: {
+    type: Array,
+  },
+});
+
 const options = {
   cluster: 'ap1',
   forceTLS: false,
@@ -52,6 +58,8 @@ const messagesTable = computed(() => {
 function submit() {
   router.post('/customers', form);
 }
+
+const selectedOption = ref(props.users[0]);
 </script>
 
 <template>
@@ -62,6 +70,22 @@ function submit() {
       </h2>
     </template>
 
+    <div class="flex flex-col items-center">
+      <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select User</label>
+      <select v-model="selectedOption" class="block p-2 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+        <option v-for="user in props.users" :key="user.id" :value="user.id">
+          {{ user.name }}
+        </option>
+      </select>
+      <!--<label for="small" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Small select</label>
+      <select id="small" class="block w-full p-2 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+        <option selected>Choose a country</option>
+        <option value="US">United States</option>
+        <option value="CA">Canada</option>
+        <option value="FR">France</option>
+        <option value="DE">Germany</option>
+      </select>-->
+    </div>
     <div class="flex flex-col items-center justify-center p-6">
       <div class="w-full max-w-md p-4 border-2 border-gray-300 rounded-xl bg-white">
         <div class="overflow-y-auto h-64">
